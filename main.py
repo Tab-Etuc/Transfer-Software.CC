@@ -30,7 +30,7 @@ def ImportBrowseFiles():
     button_Import.configure(text="已選取來源檔案路徑："+ImportFile)
 
 
-def ExportBrowseFiles(): 
+def ExportBrowseFiles():
     """選取輸出資料夾之按鈕"""
     global ExportFile
     ExportFile = filedialog.askdirectory(initialdir="/",
@@ -41,10 +41,11 @@ def ExportBrowseFiles():
     button_Export.configure(text="已輸出選取檔案路徑："+ExportFile)
 
 
-def Main():  
+def Main():
     """將tiff檔轉換至jpg檔"""
     try:
-        for imageName in os.listdir(ImportFile):
+        for imageName in [x for x in os.listdir(ImportFile) if x.endswith(".tiff")]:
+
             imagePath = os.path.join(ImportFile, imageName)
             image = Image.open(imagePath)
             distImagePath = os.path.join(ExportFile, imageName[:-4] + 'jpg')
@@ -97,3 +98,11 @@ window.resizable(width=False, height=False)
 
 # 主視窗迴圈顯示
 window.mainloop()
+
+"""筆記用  簽證的code"""
+# "C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\makecert.exe" -a sha1 -b 01/13/2022 -e 12/31/2099 -cy authority -eku 1.3.6.1.5.5.7.3.3 -sv TrSw.pvk -r -n "CN=Tab_Etuc, E=xji.gl4.vu@gmail.com" TrSw.cer
+# "C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\cert2spc" TrSw.cer TrSw.spc
+# "C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\pvk2pfx" -pvk TrSw.pvk -spc TrSw.spc -po 1234 -pfx TrSw.pfx -f
+
+# "C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\signtool.exe" sign /f TrSw.pfx /p 1234 /tr http://timestamp.sectigo.com /v "C:\Users\chris\Documents\Transfer Software\Transfer-Software\main.exe"
+# "C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\signtool.exe" sign /fd sha256 /f TrSw.pfx /p 1234 /as /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /v "C:\Users\chris\Documents\Transfer Software\Transfer-Software\main.exe"
